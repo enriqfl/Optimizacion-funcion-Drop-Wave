@@ -1,0 +1,28 @@
+# Archivos de compilación de LaTeX
+*.aux
+*.bbl
+*.blg
+*.brf
+*.fdb_latexmk
+*.fls
+*.idx
+*.ilg
+*.ind
+*.lof
+*.log
+*.lol
+*.lot
+*.nav
+*.out
+*.snm
+*.synctex.gz
+*.toc
+*.xdv
+
+# Archivos de Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+Notas/
+Reporte/lol

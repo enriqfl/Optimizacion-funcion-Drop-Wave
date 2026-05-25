@@ -1,0 +1,182 @@
+%----------------------------------------------------------------------------------------
+%    PACKAGES AND THEMES
+%----------------------------------------------------------------------------------------
+
+\documentclass[aspectratio=169,xcolor=dvipsnames]{beamer}
+\usetheme{SimplePlus}
+\setbeamercolor{normal text}{fg=black}
+\setbeamercolor{frametitle}{fg=black}
+
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish, provide=*]{babel}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17}
+
+\useinnertheme{circles}
+
+%----------------------------------------------------------------------------------------
+%    TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\title[]{La Función Drop-Wave}
+\author[Enrique Flores]{Enrique Lisandro Flores Brito}
+
+\institute
+{Universidad Autónoma del Estado de Morelos\\
+    Instituto de Investigación en Ciencias Básicas y Aplicadas\\
+    Centro de Investigación en Ciencias\\
+    Lic. en Inteligencia Artificial\\[0.5cm] % Espacio para separar
+    Búsqueda de Soluciones e Inferencia Bayesiana\\
+    Profesor: Dr. Jorge Hermosillo Valadez}
+\date{ }
+
+\usepackage{tikz}
+\usetikzlibrary{shapes.arrows}
+\usepackage{tcolorbox}
+%\usepackage{palatino}
+\setbeamercolor{normal text}{fg=black}
+\usefonttheme{default} % Typeset using the default sans serif font
+\setbeamercolor{frametitle}{fg=black}
+\setbeamercolor{section in toc}{fg=black}
+
+%	DEFINIR ENUNCIADOS IMPORTANTES
+%\DeclarePairedDelimiterX\set[1]\lbrace\rbrace{\def\given{\;\delimsize\vert\;}#1}
+\newtheorem{teo}{Teorema}[section] %	Declarar Teoremas con la numeración de la sección
+\newtheorem{coro}{Corolario}[teo]  %	Declarar Corolarios con la numeración de los Teoremas
+\newtheorem*{coro*}{Corolario}
+\newtheorem{lema}{Lema}[section]   %	Seguir la misma numeración de los Teoremas
+\newtheorem*{prop*}{Proposición}
+\newtheorem{prop}{Proposición}
+
+\theoremstyle{definition}
+\newtheorem{defi}{Definición}[section]
+
+\theoremstyle{remark}
+\newtheorem{obs}{Observación}
+
+%	Comandos personalizados
+
+\newcommand{\ZZ}{\mathbb{Z}}	% Así nos ahorramos escribir todo el comando para poner el símbolo de los enteros, reales, etc...
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\RR}{\mathbb{R}}
+
+%----------------------------------------------------------------------------------------
+%    PRESENTATION SLIDES
+%---------------------------------------------------------------------
+
+\begin{document}
+    \frame{\titlepage}
+
+    \begin{frame}{Introducción: Función Drop-Wave}
+    \begin{columns}[c] % Columnas centradas verticalmente
+
+        % Columna Izquierda: Información esencial
+        \column{0.45\textwidth}
+        \begin{block}{Características Clave}
+            \begin{itemize}
+                \item \textbf{Tipo:} Función de prueba (benchmark) multimodal.
+                \item \textbf{Desafío:} Múltiples mínimos locales en forma de ondas concéntricas.
+                \item \textbf{Mínimo Global:}
+                \[ f(0,0) = -1 \]
+            \end{itemize}
+        \end{block}
+
+        \begin{tcolorbox}[colback=blue!5,colframe=blue!75!black,title=Ecuación]
+            \small
+            \[ f(\mathbf{x}) = - \frac{1 + \cos(12 \sqrt{x_1^2 + x_2^2})}{0.5(x_1^2 + x_2^2) + 2} \]
+        \end{tcolorbox}
+
+        % Columna Derecha: Gráfico en LaTeX
+        \column{0.55\textwidth}
+        \begin{tikzpicture}
+            \begin{axis}[
+                width=\textwidth,
+                view={-35}{25},
+                enlargelimits=false,
+                grid=major,
+                domain=-5.12:5.12,
+                y domain=-5.12:5.12,
+                samples=40, % Resolución balanceada para velocidad de compilación
+                colormap/jet,
+                colorbar,
+                colorbar style={width=0.2cm},
+                xlabel=\tiny $x_1$,
+                ylabel=\tiny $x_2$,
+                zlabel=\tiny $f$,
+                zmin=-1.1, zmax=0
+            ]
+                \addplot3[
+                    surf,
+                    shader=interp,
+                ]
+                {-(1 + cos(deg(12 * sqrt(x^2 + y^2)))) / (0.5 * (x^2 + y^2) + 2)};
+            \end{axis}
+        \end{tikzpicture}
+    \end{columns}
+    \end{frame}
+
+    \begin{frame}{Optimización con Algoritmos Genéticos}
+        \begin{block}{Representación del Problema}
+            Para la función Drop-Wave, el enfoque de \textbf{Codificación Real} es el más eficiente:
+            \begin{itemize}
+                \item \textbf{Individuo (Cromosoma):} Un vector $\vec{x} = (x_1, x_2)$ donde cada gen es un número flotante.
+                \item \textbf{Espacio de Búsqueda:} Definido estrictamente en el intervalo $x_i \in [-5.12, 5.12]$.
+                \item \textbf{Población Inicial:} Generada aleatoriamente mediante una distribución uniforme para asegurar cobertura total del dominio.
+            \end{itemize}
+        \end{block}
+
+        \begin{block}{Función de Aptitud (Fitness)}
+            Dado que buscamos el mínimo global, la función de aptitud debe ser la misma función pero negativa: 
+            \begin{itemize}
+                \item \textbf{Criterio:} Minimizar $f(\vec{x})$ es equivalente a maximizar $\Phi(\vec{x}) = -f(\vec{x})$.
+                \item \textbf{Evaluación:} Se calcula la aptitud de cada candidato mediante la función Drop-Wave para cuantificar su ventaja adaptativa.
+            \end{itemize}
+        \end{block}
+    \end{frame}
+
+    \begin{frame}[t]{Optimización con Algoritmos Genéticos}
+    \vspace{0.2cm}
+
+    \begin{columns}[t]
+        \column{0.5\textwidth}
+        \begin{block}{Operadores Evolutivos}
+            \begin{itemize}
+                \item \textbf{Selección:} Por torneo.
+                \item \textbf{Cruza:} Recombinación aritmética.
+                \item \textbf{Mutación:} Ruido Gaussiano para saltar crestas.
+            \end{itemize}
+        \end{block}
+
+        \column{0.5\textwidth}
+        \begin{tcolorbox}[colback=red!5, colframe=red!75!black, title=Desafío, top=1mm, bottom=1mm]
+            \small
+            La \textbf{multimodalidad} castiga la falta de diversidad. Sin mutación suficiente, la población converge en anillos exteriores, perdiendo el pozo central en $(0,0)$.
+        \end{tcolorbox}
+    \end{columns}
+
+    \vspace{0.3cm}
+
+    \begin{block}{Condición de Parada}
+        Convergencia en región mínima o alcance del límite de generaciones, buscando el valor teórico de $-1$.
+    \end{block}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Referencias}
+
+    \begin{thebibliography}{9}
+        \bibitem[Molga and Smutnicki, 2005]{molga2005}
+        M. Molga and C. Smutnicki (2005)
+        \newblock \emph{Test functions for optimization needs}
+        \newblock \emph{Test functions for optimization needs}, 101(48), 32.
+
+        \bibitem[Surjanovic and Bingham, 2013]{surjanovic2013}
+        S. Surjanovic and D. Bingham (2013)
+        \newblock \emph{Virtual Library of Simulation Experiments: Drop-Wave Function}
+        \newblock Simon Fraser University. Retrieved from \url{https://www.sfu.ca/~ssurjano/drop.html}
+    \end{thebibliography}
+\end{frame}
+\end{document}
