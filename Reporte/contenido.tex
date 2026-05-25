@@ -164,6 +164,44 @@ en los siguientes mecanismos iterativos:
         mecanismo de restricción (\textit{clipping}) para forzar que la nueva coordenada no exceda los límites de $\pm 5.12$.
 \end{itemize}
 
+\section{Resultados}
+Tras ejecutar el algoritmo con una población de $100$ individuos durante $40$ generaciones, los datos experimentales obtenidos demuestran una convergencia
+efectiva, mostrado en las imágenes siguientes.
+
+\subsection{Comportamiento y convergencia visual}
+La dinámica poblacional puede analizarse visualmente a través de la distribución de los individuos sobre el mapa de contorno de la función.
+En las primeras generaciones (como la generación $0$), la población se encuentra completamente dispersa, cubriendo uniformemente el dominio de $[-5.12, 5.12]$
+para garantizar la exploración.
+
+Hacia las generaciones finales, la presión selectiva del torneo y el refinamiento local permitieron que los cromosomas superaran las crestas de los mínimos locales
+concéntricos, agrupándose con éxito en el pozo central del origen.
+
+\begin{figure}[htbp]
+    \centering
+     \includegraphics[width=0.40\textwidth]{img/generacion_inicial.png}
+     \includegraphics[width=0.40\textwidth]{img/generacion_mitad.png}
+     \includegraphics[width=0.40\textwidth]{img/generacion_final.png}
+    \caption{Distribución de la población por generaciones en las coordenadas del mínimo global $(0,0)$.}
+    \label{fig:convergencia_ga}
+\end{figure}
+
+\clearpage
+\section{Conclusiones}
+
+% Resumen del proyecto
+En el presente trabajo se abordó y resolvió de manera exitosa el problema de optimización continua sobre la función de prueba Drop-Wave. Para lograrlo, se
+diseñó e implementó desde cero un Algoritmo Genético con codificación real, estructurado específicamente para operar en un espacio de búsqueda continuo bidimensional
+acotado en el intervalo $[-5.12, 5.12]$.
+
+% Hallazgos
+Los resultados y hallazgos experimentales demuestran que el modelo evolutivo propuesto es capaz de encontrar y converger satisfactoriamente hacia el mínimo global
+teórico de la función, ubicado en $f(0,0) = -1$. El seguimiento de las generaciones confirmó que, a pesar de la topología hostil de la superficie —caracterizada
+por múltiples anillos concéntricos que actúan como trampas de mínimos locales—, la presión selectiva del torneo y el mecanismo de elitismo permitieron que la población
+migrara paulatinamente hasta concentrarse en el pozo central.
+
+% Reflexiones
+A partir de este desarrollo, surgen reflexiones importantes sobre la calibración y el comportamiento de los operadores evolutivos en paisajes modales complejos. Se comprobó empíricamente que la inclusión de la mutación gaussiana fungió como el motor principal para preservar la diversidad; sin esta inyección controlada de ruido, los individuos habrían sufrido una convergencia prematura en las crestas exteriores. Asimismo, la elección de una representación vectorial real y el uso del cruce aritmético validaron ser una decisión de diseño altamente efectiva, permitiendo una exploración fluida y matemática del dominio continuo. En síntesis, el proyecto constata la robustez de las técnicas bioinspiradas frente a problemas de optimización matemática no lineal.
+
 % ------------------------------------------------------------------------------
 % REFERENCIAS, revisar configuración \stylecitereferences
 % ------------------------------------------------------------------------------
