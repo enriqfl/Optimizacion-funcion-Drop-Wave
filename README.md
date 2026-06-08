@@ -20,10 +20,10 @@ La función Drop-Wave es una función de prueba (*benchmark*) altamente multimod
 
 ## Instalación y Ejecución
 
-Para ejecutar la simulación localmente y visualizar los resultados en 3D, es necesario instalar las dependencias requeridas:
+Para ejecutar la simulación localmente y visualizar los resultados en 3D, es necesario instalar las dependencias.
 
 ### Clonar el repositorio
-git clone https://github.com/enriqfl/Optimizacion-funcion-Drop-Wave#
+git clone https://github.com/enriqfl/Optimizacion-funcion-Drop-Wave
 
 ### Instalar dependencias
 pip install -r requirements.txt
